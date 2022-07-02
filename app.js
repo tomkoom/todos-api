@@ -1,4 +1,4 @@
-// import todos from ('./todos.json') // from ES6
+// import todos from ('./todos.json') // in ES6
 
 const http = require("http");
 const port = process.env.PORT || 5000;
