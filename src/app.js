@@ -19,15 +19,26 @@ const server = http.createServer(async (req, res) => {
 			"content-type": "application/json",
 		});
 		res.end(JSON.stringify(JSON.parse(reqBody)));
+
+		// delete
+	} else if (req.url.match(/\/api\/v1\/todos\/([0-9])/) && req.method === "DELETE") {
+		const id = req.url.split("/")[4];
+		const todo = todos.find((todo) => todo.id === parseInt(id));
+		if (!todo) {
+			res.writeHead(404, {
+				"content-type": "application/json",
+			});
+			res.end("No todo with the specified id");
+		} else {
+			const index = todos.indexOf(todo);
+			todos.splice(index, 1);
+			res.writeHead(200, {
+				"content-type": "application/json",
+			});
+			res.end(`Deleted the specified todo with id ${parseInt(id)}`); // String(id)
+		}
 	}
 });
-
-// const server = http.createServer((, responce) => {
-// 	responce.writeHead(200, {
-// 		"content-type": "text/plain",
-// 	});
-// 	responce.end("Hello");
-// });
 
 server.listen(port, () => {
 	console.log("Server is ready and running on Port ", port);
